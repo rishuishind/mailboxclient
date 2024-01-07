@@ -2,6 +2,7 @@ import React, { useRef } from 'react'
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from '../store/AuthSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Authentication = () => {
     const emailRef = useRef();
@@ -10,6 +11,8 @@ const Authentication = () => {
 
     const isLogingIn = useSelector(state => state.auth.isloggingIn);
     const dispatch = useDispatch();
+
+    const navigate = useNavigate();
 
     const auth_API = isLogingIn ? 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD8ycB6q6pys2MMvD6gP4F308TdRu3RshI' : 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD8ycB6q6pys2MMvD6gP4F308TdRu3RshI';
 
@@ -53,6 +56,7 @@ const Authentication = () => {
             toast.success('Logged In Successfully')
             emailRef.current.value = '';
             passwordRef.current.value = '';
+            navigate('/mailbox')
         }
         fetchForAuth();
     }
