@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Navbar = () => {
     return (
@@ -11,7 +12,8 @@ const Navbar = () => {
                     <ul className='flex justify-between'>
                         <li className=' ml-5 mr-5'>Home</li>
                         <li className=' ml-5 mr-5'>Contact us</li>
-                        <li className=' ml-5 mr-64'>About us</li>
+                        <li className=' ml-5 mr-5'>About us</li>
+                        <Link to='/my-emails'><li className='ml-5 mr-64'>My Mails</li></Link>
                     </ul>
                 </div>
             </div>

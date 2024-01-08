@@ -53,6 +53,7 @@ const Authentication = () => {
             const data = await response.json();
             dispatch(authActions.setToken(data.idToken));
             localStorage.setItem('token', data.idToken);
+            localStorage.setItem('senderEmail', emailRef.current.value);
             toast.success('Logged In Successfully')
             emailRef.current.value = '';
             passwordRef.current.value = '';

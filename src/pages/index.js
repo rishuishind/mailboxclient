@@ -1,5 +1,6 @@
 import MailHome from "./MailHome";
 import HomePage from "./HomePage";
+import MyEmails from "./MyEmails";
 
 
-export { MailHome, HomePage };
+export { MailHome, HomePage, MyEmails };
