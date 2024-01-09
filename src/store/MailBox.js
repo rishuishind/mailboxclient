@@ -13,5 +13,5 @@ const mailBoxSlice = createSlice({
     }
 });
 
-export const mailAction = mailBoxSlice.actions;
+export const mailActions = mailBoxSlice.actions;
 export default mailBoxSlice;

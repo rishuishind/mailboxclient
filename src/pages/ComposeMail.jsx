@@ -20,39 +20,60 @@ const ComposeMail = () => {
     const recieverEmailRef = useRef();
     const subjectRef = useRef();
 
-    const handleSend = () => {
+    const handleSend = async () => {
 
-        if (!recieverEmailRef.current.value || !subjectRef.current.value) {
-            toast.error('Enter valid credentials first');
-            return;
-        }
-        if (recieverEmailRef.current.value === localStorage.getItem('senderEmail')) {
-            toast.error("Can't send email to your own ID");
-            return;
-        }
-        const handleFetch = async () => {
-            const recieverEmail = recieverEmailRef.current.value.split('@')[0];
-            const response = await fetch(`https://react-http-96a9c-default-rtdb.firebaseio.com/mailbox-sent${recieverEmail}.json`,
-                {
-                    method: 'POST',
+        try {
+            const handleFetch = async () => {
+                if (!recieverEmailRef.current.value || !subjectRef.current.value) {
+                    toast.error('Enter valid credentials first');
+                    return;
+                }
+                if (recieverEmailRef.current.value === localStorage.getItem('senderEmail')) {
+                    toast.error("Can't send email to your own ID");
+                    return;
+                }
+                const recieverEmail = recieverEmailRef.current.value.split('@')[0];
+                const response = await fetch(`https://react-http-96a9c-default-rtdb.firebaseio.com/mailbox-sent${recieverEmail}.json`,
+                    {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            senderEmail: localStorage.getItem('senderEmail'),
+                            recieverEmail: recieverEmailRef.current.value,
+                            subject: subjectRef.current.value,
+                            message: convertedContent
+                        })
+                    }
+                );
+                if (!response.ok) {
+                    toast.error('Message Not sent');
+                    throw new Error('Authentication Failed');
+                }
+                const data = await response.json();
+                const editedResponse = await fetch(`https://react-http-96a9c-default-rtdb.firebaseio.com/mailbox-sent${recieverEmail}/${data.name}.json`, {
+                    method: 'PUT',
                     body: JSON.stringify({
                         senderEmail: localStorage.getItem('senderEmail'),
                         recieverEmail: recieverEmailRef.current.value,
                         subject: subjectRef.current.value,
-                        message: convertedContent
+                        message: convertedContent,
+                        id: data.name
                     })
+                });
+                if (!editedResponse.ok) {
+                    console.log(false);
+                    throw new Error('failed to edit the response')
                 }
-            );
-            if (!response.ok) {
-                toast.error('Message Not sent');
-                throw new Error('Authentication Failed');
+                toast.success('Email sent successfully');
+                recieverEmailRef.current.value = '';
+                subjectRef.current.value = '';
+                setEditorState(EditorState.createEmpty());
             }
-            toast.success('Email sent successfully');
-            recieverEmailRef.current.value = '';
-            subjectRef.current.value = '';
-            setEditorState(EditorState.createEmpty());
+            await handleFetch();
         }
-        handleFetch();
+        catch (error) {
+            console.log(error);
+            toast.error('Error occured while sending')
+        }
     }
     return (
         <div className=' ml-10'>
