@@ -1,6 +1,7 @@
-import MailHome from "./MailHome";
+import ComposeMail from "./ComposeMail";
 import HomePage from "./HomePage";
 import MyEmails from "./MyEmails";
+import MailHome from "./MailHome";
 
 
-export { MailHome, HomePage, MyEmails };
+export { ComposeMail, HomePage, MyEmails, MailHome };

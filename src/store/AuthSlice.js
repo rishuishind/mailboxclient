@@ -12,6 +12,10 @@ const AuthSlice = createSlice({
         },
         toggleLogin: (state) => {
             state.isloggingIn = !state.isloggingIn;
+        },
+        logout: (state) => {
+            state.isLoggedIn = false;
+            state.token = '';
         }
     }
 });
