@@ -14,8 +14,8 @@ const mailBoxSlice = createSlice({
                 state.unreadMessage = unreadMsg.length;
             }
         },
-        loadUnread: (state, action) => {
-
+        deleteMail: (state, action) => {
+            state.myMails = state.myMails.filter((mail) => mail.id !== action.payload.id);
         }
     }
 });
