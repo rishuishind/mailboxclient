@@ -40,7 +40,8 @@ const ComposeMail = () => {
                             senderEmail: localStorage.getItem('senderEmail'),
                             recieverEmail: recieverEmailRef.current.value,
                             subject: subjectRef.current.value,
-                            message: convertedContent
+                            message: convertedContent,
+                            isRead: false
                         })
                     }
                 );
@@ -56,6 +57,7 @@ const ComposeMail = () => {
                         recieverEmail: recieverEmailRef.current.value,
                         subject: subjectRef.current.value,
                         message: convertedContent,
+                        isRead: false,
                         id: data.name
                     })
                 });
@@ -64,9 +66,9 @@ const ComposeMail = () => {
                     throw new Error('failed to edit the response')
                 }
                 toast.success('Email sent successfully');
-                // recieverEmailRef.current.value = '';
-                // subjectRef.current.value = '';
-                // setEditorState(EditorState.createEmpty());
+                recieverEmailRef.current.value = '';
+                subjectRef.current.value = '';
+                setEditorState(EditorState.createEmpty());
             }
             await handleFetch();
         }
