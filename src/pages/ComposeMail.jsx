@@ -64,9 +64,9 @@ const ComposeMail = () => {
                     throw new Error('failed to edit the response')
                 }
                 toast.success('Email sent successfully');
-                recieverEmailRef.current.value = '';
-                subjectRef.current.value = '';
-                setEditorState(EditorState.createEmpty());
+                // recieverEmailRef.current.value = '';
+                // subjectRef.current.value = '';
+                // setEditorState(EditorState.createEmpty());
             }
             await handleFetch();
         }

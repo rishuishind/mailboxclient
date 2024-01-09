@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import toast from 'react-hot-toast';
 import { mailActions } from '../store/MailBox.js';
 import { useDispatch, useSelector } from 'react-redux';
+import { GoDotFill } from "react-icons/go";
 
 const MyEmails = () => {
 
@@ -44,11 +45,11 @@ const MyEmails = () => {
     }
 
     return (
-        <>
+        <div className=' bg-slate-100'>
             <button className=' bg-blue-800 text-red-100 p-3 mt-2 mb-5 ml-4 rounded-md' onClick={checkEmails}>Check Emails</button>
-            {myMails && <div>
-                <div className='ml-5'>
-                    <div className='grid grid-cols-6'>
+            {myMails && <div className=' bg-slate-100 h-screen'>
+                <div className=''>
+                    <div className='grid grid-cols-6 bg-slate-200 p-5'>
                         <div className=' col-span-1'>
                             <span className=' font-mono font-bold'>Sender Email:</span>
                         </div>
@@ -60,21 +61,22 @@ const MyEmails = () => {
                         </div>
                     </div>
                     {myMails.map((value) => (
-                        <div className='grid grid-cols-6'>
+                        <div key={value.id} className='grid grid-cols-6 p-5 hover:opacity-55'>
                             <div className=' col-span-1'>
                                 <span>{value.senderEmail}</span>
                             </div>
-                            <div className=' col-span-1'>
+                            <div className=' col-span-1 flex'>
+                                <GoDotFill className='flex text-blue-700 ml-2 text-2xl' />
                                 <span className=' text-wrap'>{value.subject}</span>
                             </div>
-                            <div className=' col-span-4'>
-                                {<span dangerouslySetInnerHTML={{ __html: value.message }} />}
+                            <div id='hey' className=' col-span-4'>
+                                <span dangerouslySetInnerHTML={{ __html: value.message }} className=' whitespace-nowrap overflow-hidden text-ellipsis' />
                             </div>
                         </div>
                     ))}
                 </div>
             </div>}
-        </>
+        </div>
     )
 }
 
