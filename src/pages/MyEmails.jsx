@@ -7,31 +7,42 @@ import { NavLink } from 'react-router-dom';
 
 const MyEmails = () => {
 
-    const myEmail = localStorage.getItem('senderEmail').split('@')[0];
+    const myEmail = localStorage.getItem('senderEmail');
 
     const myMails = useSelector(state => state.mail.myMails);
     const unReadMsg = useSelector(state => state.mail.unreadMessage);
     const dispatch = useDispatch()
 
     useEffect(() => {
+        let isMounted = true;
         const fetchEmails = async () => {
-            const response = await fetch(`https://react-http-96a9c-default-rtdb.firebaseio.com/mailbox-sent${myEmail}.json`);
-            if (!response.ok) {
-                console.log('Auth fails');
+            try {
+                const response = await fetch(`https://react-http-96a9c-default-rtdb.firebaseio.com/mailbox-sent.json`);
+                if (!response.ok) {
+                    console.log('Auth fails');
+                }
+                const data = await response.json();
+                if (isMounted) {
+                    dispatch(mailActions.loadMails(Object.values(data)));
+                    dispatch(mailActions.myEmails(myEmail));
+                }
             }
-            const data = await response.json();
-            if (data) {
-                dispatch(mailActions.loadMails(Object.values(data)));
+            catch (error) {
+                console.log(error);
             }
+
         }
         fetchEmails();
+        return () => {
+            isMounted = false
+        }
     }, [])
 
 
     const checkEmails = () => {
         toast.loading('Loading emails', { duration: 300 })
         const fetchEmails = async () => {
-            const response = await fetch(`https://react-http-96a9c-default-rtdb.firebaseio.com/mailbox-sent${myEmail}.json`);
+            const response = await fetch(`https://react-http-96a9c-default-rtdb.firebaseio.com/mailbox-sent.json`);
             if (!response.ok) {
                 console.log('Auth fails');
             }
@@ -51,7 +62,7 @@ const MyEmails = () => {
         const editEmail = async () => {
             console.log('hi im inside');
             try {
-                const response = await fetch(`https://react-http-96a9c-default-rtdb.firebaseio.com/mailbox-sent${myEmail}/${value.id}.json`, {
+                const response = await fetch(`https://react-http-96a9c-default-rtdb.firebaseio.com/mailbox-sent/${value.id}.json`, {
                     method: 'PUT',
                     body: JSON.stringify({
                         ...value,
@@ -74,7 +85,7 @@ const MyEmails = () => {
     const handleDelete = async (mail) => {
         const editMail = async () => {
             try {
-                const response = await fetch(`https://react-http-96a9c-default-rtdb.firebaseio.com/mailbox-sent${myEmail}/${mail.id}.json`, {
+                const response = await fetch(`https://react-http-96a9c-default-rtdb.firebaseio.com/mailbox-sent/${mail.id}.json`, {
                     method: 'DELETE'
                 });
                 if (!response.ok) {
@@ -94,6 +105,9 @@ const MyEmails = () => {
         <div className=' bg-slate-100'>
             <div className='flex justify-between'>
                 <button className=' bg-blue-800 text-red-100 p-3 mt-2 mb-5 ml-4 rounded-md' onClick={checkEmails}>Check Emails</button>
+
+                <NavLink to='/mailbox/my-emails/sentmail' className=' bg-lime-600 text-red-100 p-3 mt-2 mb-5 ml-4 rounded-md'>Sent Mails</NavLink>
+
                 <span className='px-4 py-3 mt-2 mb-4 bg-slate-700 mr-5 rounded-lg text-white'>Unread:{unReadMsg} </span>
             </div>
             {myMails && <div className=' bg-slate-100 h-screen'>

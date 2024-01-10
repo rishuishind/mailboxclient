@@ -33,7 +33,7 @@ const ComposeMail = () => {
                     return;
                 }
                 const recieverEmail = recieverEmailRef.current.value.split('@')[0];
-                const response = await fetch(`https://react-http-96a9c-default-rtdb.firebaseio.com/mailbox-sent${recieverEmail}.json`,
+                const response = await fetch(`https://react-http-96a9c-default-rtdb.firebaseio.com/mailbox-sent.json`,
                     {
                         method: 'POST',
                         body: JSON.stringify({
@@ -50,7 +50,7 @@ const ComposeMail = () => {
                     throw new Error('Authentication Failed');
                 }
                 const data = await response.json();
-                const editedResponse = await fetch(`https://react-http-96a9c-default-rtdb.firebaseio.com/mailbox-sent${recieverEmail}/${data.name}.json`, {
+                const editedResponse = await fetch(`https://react-http-96a9c-default-rtdb.firebaseio.com/mailbox-sent/${data.name}.json`, {
                     method: 'PUT',
                     body: JSON.stringify({
                         senderEmail: localStorage.getItem('senderEmail'),

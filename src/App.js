@@ -1,5 +1,5 @@
 import { Fragment, useEffect } from "react";
-import { HomePage, ComposeMail, MyEmails, MailHome, Inbox } from './pages/index';
+import { HomePage, ComposeMail, MyEmails, MailHome, Inbox, SentMail } from './pages/index';
 import Navbar from "./components/Navbar";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -27,6 +27,7 @@ function App() {
           <Route path='/mailbox/compose' element={<ComposeMail />} />
           <Route path="/mailbox/my-emails" element={<MyEmails />} />
           <Route path="/mailbox/my-emails/:id" element={<Inbox />} />
+          <Route path="/mailbox/my-emails/sentmail" element={<SentMail />} />
         </Routes>
       </BrowserRouter>
     </Fragment>
