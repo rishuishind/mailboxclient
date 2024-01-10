@@ -32,7 +32,6 @@ const ComposeMail = () => {
                     toast.error("Can't send email to your own ID");
                     return;
                 }
-                const recieverEmail = recieverEmailRef.current.value.split('@')[0];
                 const response = await fetch(`https://react-http-96a9c-default-rtdb.firebaseio.com/mailbox-sent.json`,
                     {
                         method: 'POST',
