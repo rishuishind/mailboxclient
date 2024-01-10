@@ -15,24 +15,28 @@ const MyEmails = () => {
 
     useEffect(() => {
         let isMounted = true;
-        const fetchEmails = async () => {
-            try {
-                const response = await fetch(`https://react-http-96a9c-default-rtdb.firebaseio.com/mailbox-sent.json`);
-                if (!response.ok) {
-                    console.log('Auth fails');
+        setInterval(() => {
+            console.log('inside');
+            const fetchEmails = async () => {
+                try {
+                    const response = await fetch(`https://react-http-96a9c-default-rtdb.firebaseio.com/mailbox-sent.json`);
+                    if (!response.ok) {
+                        console.log('Auth fails');
+                    }
+                    const data = await response.json();
+                    if (isMounted) {
+                        dispatch(mailActions.loadMails(Object.values(data)));
+                        dispatch(mailActions.myEmails(myEmail));
+                    }
                 }
-                const data = await response.json();
-                if (isMounted) {
-                    dispatch(mailActions.loadMails(Object.values(data)));
-                    dispatch(mailActions.myEmails(myEmail));
+                catch (error) {
+                    console.log(error);
                 }
-            }
-            catch (error) {
-                console.log(error);
-            }
 
-        }
-        fetchEmails();
+            }
+            fetchEmails();
+        }, 2000)
+
         return () => {
             isMounted = false
         }
